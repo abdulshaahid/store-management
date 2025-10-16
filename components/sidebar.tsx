@@ -1,5 +1,4 @@
 "use client"
-
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -14,8 +13,9 @@ const items = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  
   return (
-    <aside className="hidden w-56 shrink-0 border-r bg-sidebar md:block">
+    <aside className="hidden lg:block w-56 shrink-0 border-r bg-sidebar">
       <div className="flex items-center gap-2 px-4 py-4">
         <Honey className="size-5 text-primary" />
         <div>
@@ -23,6 +23,7 @@ export function Sidebar() {
           <p className="text-xs text-muted-foreground">Dates • Honey • Nuts</p>
         </div>
       </div>
+      
       <nav className="mt-2 grid gap-1 p-2">
         {items.map((it) => {
           const active = pathname === it.href

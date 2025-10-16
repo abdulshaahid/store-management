@@ -11,7 +11,7 @@ export default function DashboardLayout({
     <div className="min-h-dvh">
       <div className="mx-auto flex min-h-dvh max-w-[1400px]">
         <Sidebar />
-        <main className="flex-1 p-4 pb-24 md:p-6 md:pb-24">{children}</main>
+        <main className="flex-1 p-4 pb-24 lg:p-6 lg:pb-6">{children}</main>
       </div>
       <MobileTabBar />
     </div>
