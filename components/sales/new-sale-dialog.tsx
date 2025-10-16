@@ -38,7 +38,7 @@ const mockProducts = [
   { id: "6", name: "Headphones", unit: "piece", price: 149.99 },
 ];
 
-export function NewSaleDialog() {
+export default function NewSaleDialog() {
   const products = mockProducts;
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -133,24 +133,60 @@ export function NewSaleDialog() {
             </DialogTitle>
           </DialogHeader>
 
+          {/* Search - Sticky at top */}
+          <div className="sticky top-0 bg-background px-3 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3 z-20 border-b shadow-sm">
+            <div className="relative">
+              <Search
+                className={`pointer-events-none absolute left-2.5 sm:left-3 top-1/2 size-3.5 sm:size-4 -translate-y-1/2 text-muted-foreground transition-all duration-300 ${
+                  query ? "scale-110 text-primary" : ""
+                }`}
+              />
+              <Input
+                placeholder="Search products..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="pl-8 sm:pl-9 h-9 sm:h-10 text-sm transition-all duration-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              />
+              
+              {/* Search Suggestions Dropdown */}
+              {query && filtered.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-card border rounded-lg shadow-lg max-h-64 overflow-y-auto z-30 animate-in fade-in-0 slide-in-from-top-2 duration-200">
+                  {filtered.map((p, idx) => (
+                    <button
+                      key={p.id}
+                      className="w-full px-3 py-2 text-left hover:bg-accent transition-colors border-b last:border-b-0 flex items-center justify-between group"
+                      onClick={() => {
+                        addToCart(p);
+                        setQuery("");
+                      }}
+                      style={{
+                        animationDelay: `${idx * 30}ms`,
+                      }}
+                    >
+                      <div className="flex-1">
+                        <div className="font-medium text-xs sm:text-sm group-hover:text-primary transition-colors">
+                          {p.name}
+                        </div>
+                        <div className="text-[10px] sm:text-xs text-muted-foreground">
+                          {p.unit}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs sm:text-sm font-medium text-primary">
+                          ${p.price.toFixed(2)}
+                        </span>
+                        <Plus className="size-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Scrollable Content Area */}
           <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-2">
             <div className="space-y-3 sm:space-y-4 pb-2">
-              {/* Search */}
-              <div className="relative sticky top-0 bg-background pt-1 pb-2 z-10">
-                <Search
-                  className={`pointer-events-none absolute left-2.5 sm:left-3 top-1/2 size-3.5 sm:size-4 -translate-y-1/2 text-muted-foreground transition-all duration-300 ${
-                    query ? "scale-110 text-primary" : ""
-                  }`}
-                />
-                <Input
-                  placeholder="Search products..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="pl-8 sm:pl-9 h-9 sm:h-10 text-sm transition-all duration-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                />
-              </div>
-
               {/* Product Quick-Pick */}
               <div>
                 <h4 className="text-xs sm:text-sm font-medium mb-2 text-muted-foreground flex items-center gap-2">
@@ -163,7 +199,7 @@ export function NewSaleDialog() {
                   {filtered.map((p, idx) => (
                     <button
                       key={p.id}
-                      className="group/card rounded-lg border p-2 sm:p-3 text-left transition-all duration-200 hover:bg-accent hover:border-primary hover:shadow-md hover:-translate-y-1 active:scale-95 animate-in fade-in-0 slide-in-from-bottom-2"
+                      className="group/card shadow-md rounded-lg bg-green border border-dashed p-2 sm:p-3 text-left transition-all duration-200 hover:bg-accent hover:border-primary hover:shadow-md hover:-translate-y-1 active:scale-95 animate-in fade-in-0 slide-in-from-bottom-2"
                       style={{
                         animationDelay: `${idx * 30}ms`,
                         animationDuration: "300ms",
@@ -200,7 +236,7 @@ export function NewSaleDialog() {
                   {cart.map((i, idx) => (
                     <div
                       key={i.productId}
-                      className="rounded-lg border bg-card p-2.5 sm:p-3 animate-in fade-in-0 slide-in-from-right-4 hover:shadow-md hover:border-primary/50 transition-all duration-200"
+                      className="rounded-xl shadow-lg border bg-card p-2.5 sm:p-3 animate-in fade-in-0 slide-in-from-right-4 hover:shadow-md transition-all duration-200"
                       style={{
                         animationDelay: `${idx * 50}ms`,
                         animationDuration: "300ms",
@@ -357,9 +393,9 @@ export function NewSaleDialog() {
             </div>
 
             {/* Bill with enhanced design */}
-            <div className="rounded-2xl bg-card shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 zoom-in-95 duration-500 delay-200 ">
+            <div className="rounded-2xl bg-card shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 zoom-in-95 duration-500 delay-200">
               {/* Header with gradient and pattern */}
-              <div className="bg-gradient-to-r from-primary via-primary to-primary/90 px-4 sm:px-6 py-4 sm:py-5 text-primary-foreground relative overflow-hidden">
+              <div className="bg-gradient-to-tr from-primary via-primary/90 to-primary px-4 sm:px-6 py-4 sm:py-5 text-primary-foreground relative overflow-hidden">
                 {/* Animated background pattern */}
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-3xl" />
